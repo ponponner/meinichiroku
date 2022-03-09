@@ -78,7 +78,7 @@ const EXPORT_DATA_FILE_NAME = '命日録.json';
 const IndexPage: React.VFC<void> = () => {
   const [selectedTabIndex, setSelectedTabIndex] = React.useState(1);
   const [newRecord, setNewRecord] = React.useState(createNewRecorde);
-  const [records, setRecords] = React.useState(loadDataFromLocalStorage);
+  const [records, setRecords] = React.useState<Record[]>([]);
 
   function onTabSelect(tabId: number) {
     setSelectedTabIndex(tabId);
@@ -91,13 +91,21 @@ const IndexPage: React.VFC<void> = () => {
     }));
   }
 
-  function onRecordsInitialize() {
+  function onRecordsStoreDebugData() {
     setRecords([...DEBUG_INITIAL_RECORDS.map(x => ({ ...x }))]);
   }
 
   function onRecordsClear() {
     setRecords([]);
   }
+
+  React.useEffect(() => {
+    const recordsJSON = localStorage.getItem(LOCAL_STORAGE_KEY_RECORDS);
+    if (!recordsJSON) {
+      return;
+    }
+    setRecords(JSON.parse(recordsJSON) as Record[]);
+  }, []);
 
   function onRecordAdd(newRecord: Record) {
     setRecords(prev => [newRecord, ...prev]);
@@ -134,7 +142,8 @@ const IndexPage: React.VFC<void> = () => {
   }
 
   React.useEffect(() => {
-    saveDataToLocalStorage(records);
+    const recordsJSON = JSON.stringify(records);
+    localStorage.setItem('records', recordsJSON);
   }, [records]);
 
   return (
@@ -162,7 +171,7 @@ const IndexPage: React.VFC<void> = () => {
                 newRecord,
                 onNewRecordPropChange: onNewRecordPropChange,
                 records,
-                onRecordsInitialize,
+                onRecordsInitialize: onRecordsStoreDebugData,
                 onRecordsClear,
                 onRecordAdd,
                 onRecordRemove,
@@ -206,19 +215,6 @@ function createNewRecorde(): Record {
     remarks: undefined,
     enjoyment: undefined,
   }
-}
-
-function loadDataFromLocalStorage(): Record[] {
-  const recordsJSON = localStorage.getItem(LOCAL_STORAGE_KEY_RECORDS);
-  if (recordsJSON) {
-    return JSON.parse(recordsJSON) as Record[];
-  }
-  return [];
-}
-
-function saveDataToLocalStorage(records: Record[]) {
-  const recordsJSON = JSON.stringify(records);
-  localStorage.setItem('records', recordsJSON);
 }
 
 export default IndexPage;
