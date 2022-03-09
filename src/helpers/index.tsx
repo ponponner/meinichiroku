@@ -1,3 +1,5 @@
+export const appVersion = process.env.GATSBY_APP_VERSION;
+
 export function getYearth(date: string): number {
     return new Date().getFullYear() - new Date(date).getFullYear() + 1;
 }

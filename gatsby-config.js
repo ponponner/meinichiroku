@@ -1,3 +1,10 @@
+const dotenv = require('dotenv')
+const myEnv = dotenv.config({
+  path: `.env.${process.env.NODE_ENV}`,
+});
+const dotenvExpand = require('dotenv-expand');
+dotenvExpand.expand(myEnv);
+
 /** @type {import('gatsby').GatsbyConfig} */
 module.exports = {
   siteMetadata: {

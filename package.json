@@ -22,6 +22,8 @@
     "@geolonia/japanese-numeral": "^0.1.15",
     "bulma": "^0.9.3",
     "clsx": "^1.1.1",
+    "dotenv": "^16.0.0",
+    "dotenv-expand": "^8.0.1",
     "gatsby": "^4.9.0",
     "gatsby-plugin-sass": "^5.9.0",
     "nanoid": "^3.3.1",

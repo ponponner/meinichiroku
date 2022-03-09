@@ -4,7 +4,7 @@ import '@fortawesome/fontawesome-free/js/regular';
 import "../styles/index.scss"
 
 import { APP_TITLE, DEBUG_INITIAL_RECORDS, EXPORT_DATA_FILE_NAME, LOCAL_STORAGE_KEY_RECORDS } from "../consts";
-import { getDateAsISOLocalString, toRecordDate } from "../helpers";
+import { appVersion, getDateAsISOLocalString, toRecordDate } from "../helpers";
 
 import { nanoid } from "nanoid";
 import * as React from "react"
@@ -128,8 +128,11 @@ const IndexPage: React.VFC<void> = () => {
       <ErrorBoundary>
         <header className="IndexHeader header has-background-light">
           <nav className="navbar is-transparent">
-            <div className="navbar-brand">
-              <h1 className="navbar-item title">{APP_TITLE}</h1>
+            <div className='is-flex-direction-row'>
+              <div className="navbar-brand">
+                <h1 className="navbar-item title pr-2">{APP_TITLE}</h1>
+                <span className='navbar-item mb-4 pl-0 pb-0'>{`ver.${appVersion}`}</span>
+              </div>
             </div>
           </nav>
           <TabHeads
