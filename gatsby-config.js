@@ -1,9 +1,10 @@
 /** @type {import('gatsby').GatsbyConfig} */
 module.exports = {
   siteMetadata: {
-    title: ``,
-    siteUrl: `https://www.yourdomain.tld`
+    title: `命日録`,
+    siteUrl: `https://ponponner.github.io/meinichiroku/`
   },
+  pathPrefix: "/meinichiroku",
   plugins: [
     "gatsby-plugin-sass"
   ]
