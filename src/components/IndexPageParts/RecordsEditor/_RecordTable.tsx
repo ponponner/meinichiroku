@@ -4,6 +4,7 @@ import { Record } from "../../../pages";
 
 type OnNewItemChange = (key: string, value: string) => void;
 type OnItemChange = (recordId: string, propName: string, propValue: string) => void;
+type OnItemsSwap = (itemId: string, diffIdx: number) => void;
 
 interface RecordTableProps {
   newItem: Record,
@@ -12,6 +13,7 @@ interface RecordTableProps {
   onItemAdd: (newItem: Record) => void;
   onItemRemove: (itemId: string) => void;
   onItemChange: OnItemChange;
+  onItemsSwap: OnItemsSwap;
 }
 
 export const RecordTable: React.VFC<RecordTableProps> = (props) => {
@@ -39,15 +41,18 @@ export const RecordTable: React.VFC<RecordTableProps> = (props) => {
             onSelect={onRowSelect}
             onItemAdd={props.onItemAdd}
           />
-          {props.items.map((item, i) =>
+          {[...props.items].reverse().map((item, i) =>
             <RecordTableItemRow
               key={item.id}
               no={props.items.length - i}
+              sortUpIsDisabled={i === 0}
+              sortDownIsDisabled={i === props.items.length - 1}
               isSelected={item.id === selectedItemId}
               {...item}
               onSelect={onRowSelect}
               onItemRemove={props.onItemRemove}
               onItemPropChange={props.onItemChange}
+              onItemsSwap={props.onItemsSwap}
             />
           )}
         </tbody>
@@ -59,6 +64,7 @@ export const RecordTable: React.VFC<RecordTableProps> = (props) => {
 const RecordTableHeadRow: React.VFC<{}> = () => {
   return (
     <tr>
+      <th></th>
       <th>番号</th>
       <th>姓</th>
       <th>名</th>
@@ -97,6 +103,7 @@ const RecordTableInputRow: React.VFC<RecordTableInputRowProps> = (props) => {
 
   return (
     <tr className={props.isSelected ? 'is-selected' : ''} onClick={onRowClick}>
+      <td></td>
       <td></td>
       <td>
         <input
@@ -162,10 +169,13 @@ const RecordTableInputRow: React.VFC<RecordTableInputRowProps> = (props) => {
 
 interface RecordTableItemRowProps extends Record {
   no: number;
+  sortUpIsDisabled: boolean;
+  sortDownIsDisabled: boolean;
   isSelected: boolean;
   onSelect: any;
   onItemRemove: (recordId: string) => void;
   onItemPropChange: OnItemChange;
+  onItemsSwap: OnItemsSwap;
 }
 
 const RecordTableItemRow: React.VFC<RecordTableItemRowProps> = (props) => {
@@ -179,6 +189,24 @@ const RecordTableItemRow: React.VFC<RecordTableItemRowProps> = (props) => {
       className={props.isSelected ? 'is-selected' : ''}
       onClick={() => props.onSelect(props.id)}
     >
+      <td>
+        <button
+          className="button is-small"
+          type="button"
+          disabled={props.sortUpIsDisabled}
+          onClick={() => props.onItemsSwap(props.id, 1)}
+        >
+          <i className="fa-solid fa-sort-up"></i>
+        </button>
+        <button
+          className="button is-small"
+          type="button"
+          disabled={props.sortDownIsDisabled}
+          onClick={() => props.onItemsSwap(props.id, -1)}
+        >
+          <i className="fa-solid fa-sort-down"></i>
+        </button>
+      </td>
       <td>{props.no}</td>
       <td>
         {

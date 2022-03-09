@@ -1,14 +1,17 @@
+import '@fortawesome/fontawesome-free/js/fontawesome';
+import '@fortawesome/fontawesome-free/js/solid';
+import '@fortawesome/fontawesome-free/js/regular';
+import "../styles/index.scss"
+
+import { APP_TITLE, DEBUG_INITIAL_RECORDS, EXPORT_DATA_FILE_NAME, LOCAL_STORAGE_KEY_RECORDS } from "../consts";
+import { getDateAsISOLocalString, toRecordDate } from "../helpers";
+
 import { nanoid } from "nanoid";
 import * as React from "react"
 import { RecordsEditor } from "../components/IndexPageParts/RecordsEditor";
 import { RecordsViewer } from "../components/IndexPageParts/RecordsViewer";
 import { TabBodies, TabBody, TabHead, TabHeads } from "../components/Tabs";
-import '@fortawesome/fontawesome-free/js/fontawesome';
-import '@fortawesome/fontawesome-free/js/solid';
-import '@fortawesome/fontawesome-free/js/regular';
-import "../styles/index.scss"
 import { ErrorBoundary } from "../components/ErrorBoundary";
-import { getDateAsISOLocalString } from "../helpers";
 
 export interface AppData {
   records: Record[];
@@ -22,60 +25,6 @@ export interface Record {
   remarks?: string;
   enjoyment?: number;
 }
-
-const APP_TITLE = '命日録';
-const LOCAL_STORAGE_KEY_RECORDS = 'records';
-const DEBUG_INITIAL_RECORDS: Record[] = [
-  // 0 : 9
-  { surname: '佐藤', name: '太郎', date: new Date(), remarks: "友人", enjoyment: 99 },
-  { surname: '鈴木', name: '花子', date: new Date() },
-  { surname: '佐藤', name: '太郎', date: new Date() },
-  { surname: '鈴木', name: '花子', date: new Date() },
-  { surname: '佐藤', name: '太郎', date: new Date() },
-  { surname: '鈴木', name: '花子', date: new Date() },
-  { surname: '佐藤', name: '太郎', date: new Date() },
-  { surname: '鈴木', name: '花子', date: new Date() },
-  { surname: '佐藤', name: '太郎', date: new Date() },
-  { surname: '鈴木', name: '花子', date: new Date() },
-  // 10 : 19
-  { surname: '佐藤', name: '太郎', date: new Date() },
-  { surname: '鈴木', name: '花子', date: new Date() },
-  { surname: '佐藤', name: '太郎', date: new Date() },
-  { surname: '鈴木', name: '花子', date: new Date() },
-  { surname: '佐藤', name: '太郎', date: new Date() },
-  { surname: '鈴木', name: '花子', date: new Date() },
-  { surname: '佐藤', name: '太郎', date: new Date() },
-  { surname: '鈴木', name: '花子', date: new Date() },
-  { surname: '佐藤', name: '太郎', date: new Date() },
-  { surname: '鈴木', name: '花子', date: new Date() },
-  // 20 : 29
-  { surname: '佐藤', name: '太郎', date: new Date() },
-  { surname: '鈴木', name: '花子', date: new Date() },
-  { surname: '佐藤', name: '太郎', date: new Date() },
-  { surname: '鈴木', name: '花子', date: new Date() },
-  { surname: '佐藤', name: '太郎', date: new Date() },
-  { surname: '鈴木', name: '花子', date: new Date() },
-  { surname: '佐藤', name: '太郎', date: new Date() },
-  { surname: '鈴木', name: '花子', date: new Date() },
-  { surname: '佐藤', name: '太郎', date: new Date() },
-  { surname: '鈴木', name: '花子', date: new Date() },
-  // 30 : 39
-  { surname: '佐藤', name: '太郎', date: new Date() },
-  { surname: '鈴木', name: '花子', date: new Date() },
-  { surname: '佐藤', name: '太郎', date: new Date() },
-  { surname: '鈴木', name: '花子', date: new Date() },
-  { surname: '佐藤', name: '太郎', date: new Date() },
-  { surname: '鈴木', name: '花子', date: new Date() },
-  { surname: '佐藤', name: '太郎', date: new Date() },
-  { surname: '鈴木', name: '花子', date: new Date() },
-  { surname: '佐藤', name: '太郎', date: new Date() },
-  { surname: '鈴木', name: '花子', date: new Date() },
-].map(x => ({
-  ...x,
-  id: nanoid(),
-  date: formatDate(x.date),
-}));
-const EXPORT_DATA_FILE_NAME = '命日録';
 
 const IndexPage: React.VFC<void> = () => {
   const [selectedTabIndex, setSelectedTabIndex] = React.useState(0);
@@ -110,7 +59,7 @@ const IndexPage: React.VFC<void> = () => {
   }, []);
 
   function onRecordAdd(newRecord: Record) {
-    setRecords(prev => [newRecord, ...prev]);
+    setRecords(prev => [...prev, newRecord]);
     setNewRecord(createNewRecorde());
   }
 
@@ -131,6 +80,24 @@ const IndexPage: React.VFC<void> = () => {
         [propName]: propValue,
       };
     }));
+  }
+
+  function onRecordsSwap(recordId: string, diffIdx: number) {
+    setRecords(prev => {
+      let idxA = prev.findIndex(x => x.id === recordId);
+      let idxB = idxA + diffIdx;
+      [idxA, idxB] = [idxA, idxB].sort();
+      if ([idxA, idxB].some(idx => (idx < 0 || prev.length <= idx))) {
+        return prev;
+      }
+      return [
+        ...prev.slice(0, idxA),
+        prev[idxB],
+        ...prev.slice(idxA + 1, idxB),
+        prev[idxA],
+        ...prev.slice(idxB + 1),
+      ];
+    });
   }
 
   function createSaveData(): AppData {
@@ -183,6 +150,7 @@ const IndexPage: React.VFC<void> = () => {
                   onRecordAdd,
                   onRecordRemove,
                   onRecordPropChange,
+                  onRecordsSwap,
                   onAppDataUpload,
                   createSaveData,
                   createSaveFileName,
@@ -199,27 +167,12 @@ const IndexPage: React.VFC<void> = () => {
   );
 }
 
-function formatDate(date: Date) {
-  function leftPadding(value: string | number, chara: string, length: number) {
-    let s = '' + value;
-    for (let i = s.length; i < length; i++) {
-      s = chara + s;
-    }
-    return s;
-  }
-  const chara = "0";
-  const year = leftPadding(date.getFullYear(), chara, 4);
-  const month = leftPadding(date.getMonth() + 1, chara, 2);
-  const day = leftPadding(date.getDate(), chara, 2);
-  return `${year}-${month}-${day}`;
-}
-
 function createNewRecorde(): Record {
   return {
     id: nanoid(),
     surname: '',
     name: '',
-    date: formatDate(new Date()),
+    date: toRecordDate(new Date()),
     remarks: undefined,
     enjoyment: undefined,
   }

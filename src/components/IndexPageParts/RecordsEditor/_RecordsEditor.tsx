@@ -3,7 +3,6 @@ import { RecordTable } from "./_RecordTable";
 import { UploadButton } from "./_UploadButton";
 import { DownloadButton } from "./_DownloadButton";
 import { Record } from "../../../pages";
-import { ErrorBoundary } from "../../ErrorBoundary";
 
 interface RecordsEditorProps {
   newRecord: Record;
@@ -15,6 +14,7 @@ interface RecordsEditorProps {
   onRecordRemove: any;
   onAppDataUpload: any;
   onRecordPropChange: any;
+  onRecordsSwap: any;
   createSaveData: any;
   createSaveFileName: () => string;
 }
@@ -44,6 +44,7 @@ export const RecordsEditor: React.VFC<RecordsEditorProps> = (props) => {
     onRecordAdd: handleRecordAdd,
     onRecordRemove: handleRecordRemove,
     onRecordPropChange: handleRecordChange,
+    onRecordsSwap,
     onAppDataUpload: handleAppDataUpload,
     createSaveData,
     createSaveFileName,
@@ -89,6 +90,7 @@ export const RecordsEditor: React.VFC<RecordsEditorProps> = (props) => {
         onItemAdd={handleRecordAdd}
         onItemRemove={handleRecordRemove}
         onItemChange={handleRecordChange}
+        onItemsSwap={onRecordsSwap}
       />
 
       <div className="columns">

@@ -17,8 +17,8 @@ export const RecordsViewer: React.VFC<RecordsViewerProps> = (props) => {
                             <span>&emsp;</span>
                             <span>{`${number2kanji(getYearth(item.date))}年目`}</span>
                         </div>
-                        <div className="m-3">
-                            <span className="mt-6" />
+                        <div className="mt-3">
+                            <span className="mt-5" />
                             {item.surname}
                             <span className="mt-3" />
                             {item.name}
