@@ -52,11 +52,12 @@ function number2kanji(value: number | string): string {
 }
 
 function formatDate(dateString: string): string {
+    console.log(dateString)
     const date = new Date(dateString);
     const ey = date.toLocaleDateString('ja-JP-u-ca-japanese', { era: "long", year: "2-digit" });
     const era = ey.slice(0, 2);
     const year = number2kanji(ey.slice(2, 4));
     const month = number2kanji(date.getMonth() + 1);
-    const day = number2kanji(date.getDay());
+    const day = number2kanji(date.getDate());
     return `${era}${year}年${month}月${day}日`;
 }

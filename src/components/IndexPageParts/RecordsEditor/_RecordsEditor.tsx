@@ -3,24 +3,25 @@ import { RecordTable } from "./_RecordTable";
 import { UploadButton } from "./_UploadButton";
 import { DownloadButton } from "./_DownloadButton";
 import { Record } from "../../../pages";
+import { ErrorBoundary } from "../../ErrorBoundary";
 
 interface RecordsEditorProps {
   newRecord: Record;
   onNewRecordPropChange: any;
   records: Record[];
-  onRecordsInitialize: any;
+  onRecordsStoreDebugData: any;
   onRecordsClear: any;
   onRecordAdd: any;
   onRecordRemove: any;
   onAppDataUpload: any;
   onRecordPropChange: any;
   createSaveData: any;
-  saveFileName: string;
+  createSaveFileName: () => string;
 }
 
 export const RecordsEditor: React.VFC<RecordsEditorProps> = (props) => {
-
   const [filterWord, setFilterWord] = React.useState('');
+  const filteredItems = filterItems(props.records, filterWord);
 
   function onFilterIptChange(event: React.ChangeEvent<HTMLInputElement>) {
     setFilterWord(event.target.value);
@@ -34,20 +35,18 @@ export const RecordsEditor: React.VFC<RecordsEditorProps> = (props) => {
     return items.filter(item => Object.values(item).some(value => value.toString().includes(filterWord)));
   }
 
-  const filteredItems = filterItems(props.records, filterWord);
-
   const {
     newRecord,
     onNewRecordPropChange: handleNewRecordChange,
     records,
-    onRecordsInitialize,
+    onRecordsStoreDebugData: onRecordsInitialize,
     onRecordsClear,
     onRecordAdd: handleRecordAdd,
     onRecordRemove: handleRecordRemove,
     onRecordPropChange: handleRecordChange,
     onAppDataUpload: handleAppDataUpload,
     createSaveData,
-    saveFileName,
+    createSaveFileName,
   } = props;
   return (
     <>
@@ -70,15 +69,15 @@ export const RecordsEditor: React.VFC<RecordsEditorProps> = (props) => {
         <div className="column"></div>
         <div className="column is-narrow">
           <UploadButton onUpload={handleAppDataUpload}>
-            <strong>命日録を読込む</strong>
+            <strong>記録を読込む</strong>
           </UploadButton>
         </div>
         <div className="column is-narrow">
           <DownloadButton
             createSaveData={createSaveData}
-            fileName={saveFileName}
+            createSaveFileName={createSaveFileName}
           >
-            <strong>命日録を保存する</strong>
+            <strong>記録を保存する</strong>
           </DownloadButton>
         </div>
       </div>
@@ -96,12 +95,12 @@ export const RecordsEditor: React.VFC<RecordsEditorProps> = (props) => {
         <div className="column">
         </div>
         <div className="column is-narrow">
-          <button className="button is-danger" onClick={onRecordsInitialize}>
+          <button className="button is-warning" onClick={onRecordsInitialize}>
             <strong>テストデータ</strong>
           </button>
         </div>
         <div className="column is-narrow">
-          <button className="button is-danger" onClick={onRecordsClear}>
+          <button className="button is-warning" onClick={onRecordsClear}>
             <strong>全消去</strong>
           </button>
         </div>

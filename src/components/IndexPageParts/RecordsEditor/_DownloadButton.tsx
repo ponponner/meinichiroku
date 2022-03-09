@@ -2,7 +2,7 @@ import * as React from "react"
 
 interface DownloadButtonProps {
   createSaveData: () => any;
-  fileName: string;
+  createSaveFileName: () => string;
   children: React.ReactNode;
 }
 
@@ -16,7 +16,7 @@ export const DownloadButton: React.VFC<DownloadButtonProps> = (props) => {
     const anchor = document.createElement('a');
     anchor.href = blobUrl;
     anchor.target = '_blank';
-    anchor.download = props.fileName;
+    anchor.download = props.createSaveFileName();
     anchor.click();
     URL.revokeObjectURL(blobUrl);
   }

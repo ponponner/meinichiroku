@@ -7,6 +7,8 @@ import '@fortawesome/fontawesome-free/js/fontawesome';
 import '@fortawesome/fontawesome-free/js/solid';
 import '@fortawesome/fontawesome-free/js/regular';
 import "../styles/index.scss"
+import { ErrorBoundary } from "../components/ErrorBoundary";
+import { getDateAsISOLocalString } from "../helpers";
 
 export interface AppData {
   records: Record[];
@@ -73,10 +75,10 @@ const DEBUG_INITIAL_RECORDS: Record[] = [
   id: nanoid(),
   date: formatDate(x.date),
 }));
-const EXPORT_DATA_FILE_NAME = '命日録.json';
+const EXPORT_DATA_FILE_NAME = '命日録';
 
 const IndexPage: React.VFC<void> = () => {
-  const [selectedTabIndex, setSelectedTabIndex] = React.useState(1);
+  const [selectedTabIndex, setSelectedTabIndex] = React.useState(0);
   const [newRecord, setNewRecord] = React.useState(createNewRecorde);
   const [records, setRecords] = React.useState<Record[]>([]);
 
@@ -137,6 +139,10 @@ const IndexPage: React.VFC<void> = () => {
     };
   }
 
+  function createSaveFileName(): string {
+    return `${EXPORT_DATA_FILE_NAME}_${getDateAsISOLocalString()}.json`
+  }
+
   function onAppDataUpload(appData: AppData) {
     setRecords(appData.records);
   }
@@ -148,45 +154,47 @@ const IndexPage: React.VFC<void> = () => {
 
   return (
     <>
-      <header className="IndexHeader header has-background-light">
-        <nav className="navbar is-transparent">
-          <div className="navbar-brand">
-            <h1 className="navbar-item title">{APP_TITLE}</h1>
-          </div>
-        </nav>
-        <TabHeads
-          selectedTabIndex={selectedTabIndex}
-          onTabSelect={onTabSelect}
-        >
-          <TabHead>編集する</TabHead>
-          <TabHead>印刷する</TabHead>
-        </TabHeads>
-      </header>
-      <main className="container is-fluid is-fullheight">
-        <TabBodies selectedTabIndex={selectedTabIndex}>
-          <TabBody>
-            <div className="mt-3" />
-            <RecordsEditor
-              {...{
-                newRecord,
-                onNewRecordPropChange: onNewRecordPropChange,
-                records,
-                onRecordsInitialize: onRecordsStoreDebugData,
-                onRecordsClear,
-                onRecordAdd,
-                onRecordRemove,
-                onRecordPropChange: onRecordPropChange,
-                onAppDataUpload,
-                createSaveData,
-                saveFileName: EXPORT_DATA_FILE_NAME,
-              }} />
-          </TabBody>
-          <TabBody>
-            <div className="mt-5" />
-            <RecordsViewer records={records} />
-          </TabBody>
-        </TabBodies>
-      </main>
+      <ErrorBoundary>
+        <header className="IndexHeader header has-background-light">
+          <nav className="navbar is-transparent">
+            <div className="navbar-brand">
+              <h1 className="navbar-item title">{APP_TITLE}</h1>
+            </div>
+          </nav>
+          <TabHeads
+            selectedTabIndex={selectedTabIndex}
+            onTabSelect={onTabSelect}
+          >
+            <TabHead>編集する</TabHead>
+            <TabHead>印刷する</TabHead>
+          </TabHeads>
+        </header>
+        <main className="container is-fluid is-fullheight">
+          <TabBodies selectedTabIndex={selectedTabIndex}>
+            <TabBody>
+              <div className="mt-3" />
+              <RecordsEditor
+                {...{
+                  newRecord,
+                  onNewRecordPropChange,
+                  records,
+                  onRecordsStoreDebugData,
+                  onRecordsClear,
+                  onRecordAdd,
+                  onRecordRemove,
+                  onRecordPropChange,
+                  onAppDataUpload,
+                  createSaveData,
+                  createSaveFileName,
+                }} />
+            </TabBody>
+            <TabBody>
+              <div className="mt-5" />
+              <RecordsViewer records={records} />
+            </TabBody>
+          </TabBodies>
+        </main>
+      </ErrorBoundary>
     </>
   );
 }
