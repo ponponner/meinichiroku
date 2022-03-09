@@ -60,7 +60,11 @@ const IndexPage: React.VFC<void> = () => {
 
   function onRecordAdd(newRecord: Record) {
     setRecords(prev => [...prev, newRecord]);
-    setNewRecord(createNewRecorde());
+    let ph: Record;
+    do {
+      ph = createNewRecorde();
+    } while (records.some(x => x.id === ph.id));
+    setNewRecord(ph);
   }
 
   function onRecordRemove(recordId: string) {
