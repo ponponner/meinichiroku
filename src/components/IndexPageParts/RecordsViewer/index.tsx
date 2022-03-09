@@ -1,4 +1,5 @@
 import * as React from "react"
+import { getYearth } from "../../../helpers";
 import { Record } from "../../../pages";
 
 interface RecordsViewerProps {
@@ -11,7 +12,11 @@ export const RecordsViewer: React.VFC<RecordsViewerProps> = (props) => {
             {props.records.map((item, i) =>
                 <ul key={i} className="RecordsViewerItem column is-narrow">
                     <li className="mb-6">
-                        <div>{`■ ${formatDate(item.date)}`}</div>
+                        <div>
+                            <span>{`■ ${formatDate(item.date)}`}</span>
+                            <span>&emsp;</span>
+                            <span>{`${number2kanji(getYearth(item.date))}年目`}</span>
+                        </div>
                         <div className="m-3">
                             <span className="mt-6" />
                             {item.surname}

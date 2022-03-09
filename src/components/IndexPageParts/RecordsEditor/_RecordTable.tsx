@@ -1,5 +1,5 @@
-import { nanoid } from "nanoid";
 import * as React from "react"
+import { getYearth } from "../../../helpers";
 import { Record } from "../../../pages";
 
 type OnNewItemChange = (key: string, value: string) => void;
@@ -260,10 +260,6 @@ const RecordTableItemRow: React.VFC<RecordTableItemRowProps> = (props) => {
       </td>
     </tr>
   )
-}
-
-function getYearth(date: string): number {
-  return new Date().getFullYear() - new Date(date).getFullYear();
 }
 
 function omitRecordId(recordId: string) {
