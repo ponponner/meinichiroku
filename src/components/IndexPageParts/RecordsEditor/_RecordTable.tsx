@@ -69,7 +69,7 @@ const RecordTableHeadRow: React.VFC<{}> = () => {
       <th>姓</th>
       <th>名</th>
       <th>命日</th>
-      <th>年目</th>
+      <th>没年</th>
       <th>備考</th>
       <th>享年</th>
       <th>ID</th>
