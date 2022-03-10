@@ -27,7 +27,7 @@ export interface Record {
 }
 
 const IndexPage: React.VFC<void> = () => {
-  const [selectedTabIndex, setSelectedTabIndex] = React.useState(1);
+  const [selectedTabIndex, setSelectedTabIndex] = React.useState(0);
   const [newRecord, setNewRecord] = React.useState(createNewRecorde);
   const [records, setRecords] = React.useState<Record[]>([]);
 
@@ -90,7 +90,7 @@ const IndexPage: React.VFC<void> = () => {
     setRecords(prev => {
       let idxA = prev.findIndex(x => x.id === recordId);
       let idxB = idxA + diffIdx;
-      [idxA, idxB] = [idxA, idxB].sort();
+      [idxA, idxB] = [idxA, idxB].sort((a, b) => a - b);
       if ([idxA, idxB].some(idx => (idx < 0 || prev.length <= idx))) {
         return prev;
       }

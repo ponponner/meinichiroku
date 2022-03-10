@@ -11,11 +11,8 @@ export const RecordsViewer: React.VFC<RecordsViewerProps> = (props) => {
         <ul
             className={[
                 "RecordsViewer",
-                "columns",
-                "is-fullwidth",
-                "is-flex-direction-row-reverse",
-                "is-flex-wrap-wrap",
-                "is-justify-content-flex-start",
+                "mr-6",
+                "mb-6",
             ].join(" ")}
         >
             {props.records.map((item, i) =>
@@ -31,14 +28,19 @@ interface RecordsViewerItemProps {
 
 const RecordsViewerItem: React.VFC<RecordsViewerItemProps> = ({ item }) => {
     return (
-        <li className="RecordsViewerItem column is-narrow mt-6">
+        <li className={[
+            "RecordsViewerItem",
+            "mt-6",
+            "ml-5",
+        ].join(' ')}>
             <div>
                 <span>{`■ ${formatDate(item.date)}`}</span>
                 <span>&emsp;</span>
                 <span>{`${number2kanji(getYearth(item.date))}年目`}</span>
             </div>
-            <div className="mt-3">
-                <span className="mt-5" />
+            <div className="ml-1"></div>
+            <div>
+                <span>&emsp;&emsp;&emsp;</span>
                 {item.surname}
                 <span className="mt-3" />
                 {item.name}
@@ -69,7 +71,6 @@ function number2kanji(value: number | string): string {
 }
 
 function formatDate(dateString: string): string {
-    console.log(dateString)
     const date = new Date(dateString);
     const ey = date.toLocaleDateString('ja-JP-u-ca-japanese', { era: "long", year: "2-digit" });
     const era = ey.slice(0, 2);
