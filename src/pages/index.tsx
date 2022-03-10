@@ -27,7 +27,7 @@ export interface Record {
 }
 
 const IndexPage: React.VFC<void> = () => {
-  const [selectedTabIndex, setSelectedTabIndex] = React.useState(0);
+  const [selectedTabIndex, setSelectedTabIndex] = React.useState(1);
   const [newRecord, setNewRecord] = React.useState(createNewRecorde);
   const [records, setRecords] = React.useState<Record[]>([]);
 
@@ -142,11 +142,11 @@ const IndexPage: React.VFC<void> = () => {
             <TabHead>編集する</TabHead>
             <TabHead>印刷する</TabHead>
           </TabHeads>
+          <div className="mt-5" />
         </header>
         <main className="container is-fluid is-fullheight">
           <TabBodies selectedTabIndex={selectedTabIndex}>
             <TabBody>
-              <div className="mt-3" />
               <RecordsEditor
                 {...{
                   newRecord,
@@ -164,7 +164,6 @@ const IndexPage: React.VFC<void> = () => {
                 }} />
             </TabBody>
             <TabBody>
-              <div className="mt-5" />
               <RecordsViewer records={records} />
             </TabBody>
           </TabBodies>
