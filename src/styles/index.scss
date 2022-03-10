@@ -3,6 +3,18 @@
 @import "~bulma/sass/utilities/initial-variables.sass";
 @import "~bulma/sass/utilities/derived-variables.sass";
 
+@media print {
+    header {
+        display: none !important;
+    }
+    .RecordsViewer {
+        display: block !important;
+    }
+    .RecordsViewerItem {
+        display: inline-block !important;
+    }
+}
+
 .navbar {
     &.is-transparent {
         background-color: transparent;
@@ -17,6 +29,18 @@
 
 .RecordTable td {
     vertical-align: middle !important;
+}
+
+.RecordsViewer {
+    // z-index: 100;
+    // position: fixed !important;
+    // top: 0;
+    // // bottom: 0;
+    // left: 0;
+    // right: 0;
+    // margin: 0 !important;
+    // padding: 0 !important;
+    // overflow-y: auto !important;
 }
 
 .RecordsViewerItem {
