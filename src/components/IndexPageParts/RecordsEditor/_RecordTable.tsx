@@ -64,14 +64,14 @@ export const RecordTable: React.VFC<RecordTableProps> = (props) => {
 const RecordTableHeadRow: React.VFC<{}> = () => {
   return (
     <tr>
-      <th></th>
+      <th>上下</th>
       <th>番号</th>
       <th>姓</th>
       <th>名</th>
       <th>命日</th>
-      <th>没年</th>
+      <th>没年（年）</th>
       <th>備考</th>
-      <th>享年</th>
+      <th>享年（歳）</th>
       <th>ID</th>
       <th>追加/削除</th>
     </tr>
