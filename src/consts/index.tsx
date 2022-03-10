@@ -8,53 +8,11 @@ export const LOCAL_STORAGE_KEY_RECORDS = 'records';
 
 export const EXPORT_DATA_FILE_NAME = '命日録';
 
-export const DEBUG_INITIAL_RECORDS: Record[] = [
-    // 0 : 9
-    { surname: '佐藤', name: '太郎', date: new Date(), remarks: "友人", enjoyment: 99 },
-    { surname: '鈴木', name: '花子', date: new Date() },
-    { surname: '佐藤', name: '太郎', date: new Date() },
-    { surname: '鈴木', name: '花子', date: new Date() },
-    { surname: '佐藤', name: '太郎', date: new Date() },
-    { surname: '鈴木', name: '花子', date: new Date() },
-    { surname: '佐藤', name: '太郎', date: new Date() },
-    { surname: '鈴木', name: '花子', date: new Date() },
-    { surname: '佐藤', name: '太郎', date: new Date() },
-    { surname: '鈴木', name: '花子', date: new Date() },
-    // 10 : 19
-    { surname: '佐藤', name: '太郎', date: new Date() },
-    { surname: '鈴木', name: '花子', date: new Date() },
-    { surname: '佐藤', name: '太郎', date: new Date() },
-    { surname: '鈴木', name: '花子', date: new Date() },
-    { surname: '佐藤', name: '太郎', date: new Date() },
-    { surname: '鈴木', name: '花子', date: new Date() },
-    { surname: '佐藤', name: '太郎', date: new Date() },
-    { surname: '鈴木', name: '花子', date: new Date() },
-    { surname: '佐藤', name: '太郎', date: new Date() },
-    { surname: '鈴木', name: '花子', date: new Date() },
-    // 20 : 29
-    { surname: '佐藤', name: '太郎', date: new Date() },
-    { surname: '鈴木', name: '花子', date: new Date() },
-    { surname: '佐藤', name: '太郎', date: new Date() },
-    { surname: '鈴木', name: '花子', date: new Date() },
-    { surname: '佐藤', name: '太郎', date: new Date() },
-    { surname: '鈴木', name: '花子', date: new Date() },
-    { surname: '佐藤', name: '太郎', date: new Date() },
-    { surname: '鈴木', name: '花子', date: new Date() },
-    { surname: '佐藤', name: '太郎', date: new Date() },
-    { surname: '鈴木', name: '花子', date: new Date() },
-    // 30 : 39
-    { surname: '佐藤', name: '太郎', date: new Date() },
-    { surname: '鈴木', name: '花子', date: new Date() },
-    { surname: '佐藤', name: '太郎', date: new Date() },
-    { surname: '鈴木', name: '花子', date: new Date() },
-    { surname: '佐藤', name: '太郎', date: new Date() },
-    { surname: '鈴木', name: '花子', date: new Date() },
-    { surname: '佐藤', name: '太郎', date: new Date() },
-    { surname: '鈴木', name: '花子', date: new Date() },
-    { surname: '佐藤', name: '太郎', date: new Date() },
-    { surname: '鈴木', name: '花子', date: new Date() },
-].map(x => ({
-    ...x,
+export const DEBUG_INITIAL_RECORDS: Record[] = Array(20).fill(null).map((_, i) => ({
     id: nanoid(),
-    date: toRecordDate(x.date),
-}));
+    surname: ('0' + (i + 1)).slice(-2).toString(),
+    name: "太郎",
+    date: toRecordDate(new Date()),
+    remarks: "友人",
+    enjoyment: 99,
+}))
