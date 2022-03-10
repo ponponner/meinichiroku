@@ -120,7 +120,7 @@ const IndexPage: React.VFC<void> = () => {
 
   React.useEffect(() => {
     const recordsJSON = JSON.stringify(records);
-    localStorage.setItem('records', recordsJSON);
+    localStorage.setItem(LOCAL_STORAGE_KEY_RECORDS, recordsJSON);
   }, [records]);
 
   return (
