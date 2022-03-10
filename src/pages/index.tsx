@@ -50,14 +50,6 @@ const IndexPage: React.VFC<void> = () => {
     setRecords([]);
   }
 
-  React.useEffect(() => {
-    const recordsJSON = localStorage.getItem(LOCAL_STORAGE_KEY_RECORDS);
-    if (!recordsJSON) {
-      return;
-    }
-    setRecords(JSON.parse(recordsJSON) as Record[]);
-  }, []);
-
   function onRecordAdd(newRecord: Record) {
     setRecords(prev => [...prev, newRecord]);
     let ph: Record;
@@ -119,8 +111,16 @@ const IndexPage: React.VFC<void> = () => {
   }
 
   React.useEffect(() => {
+    const recordsJSON = localStorage.getItem(LOCAL_STORAGE_KEY_RECORDS);
+    if (!recordsJSON) {
+      return;
+    }
+    setRecords(JSON.parse(recordsJSON) as Record[]);
+  }, []);
+
+  React.useEffect(() => {
     const recordsJSON = JSON.stringify(records);
-    localStorage.setItem('records', recordsJSON);
+    localStorage.setItem(LOCAL_STORAGE_KEY_RECORDS, recordsJSON);
   }, [records]);
 
   return (
